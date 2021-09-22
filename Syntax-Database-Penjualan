@@ -1,0 +1,52 @@
+
+CREATE TABLE pesanan(
+id_pesanan int(5) not null,
+id_pelanggan varchar(5) NOT NULL,
+tgl_pesanan date not null,
+PRIMARY KEY(id_pesanan),
+KEY id_pelanggan(id_pelanggan),
+CONSTRAINT pesanan_ibfk_1 FOREIGN KEY (id_pelanggan) REFERENCES pelanggan (id_pelanggan)
+);
+
+CREATE TABLE faktur(
+id_faktur int(5) not null AUTO_INCREMENT,
+id_pesanan int(5) not null,
+tgl_faktur date not null,
+PRIMARY KEY(id_faktur),
+KEY id_pesanan(id_pesanan),
+CONSTRAINT faktur_ibfk_1 FOREIGN KEY(id_pesanan) REFERENCES pesanan(id_pesanan)
+);
+
+CREATE TABLE kwitansi(
+id_kwitansi int(5) not null,
+id_faktur int(5) not null,
+tgl_kwitansi date not null,
+PRIMARY KEY(id_kwitansi),
+KEY FK_kwitansi(id_faktur),
+CONSTRAINT FK_kwitansi FOREIGN KEY(id_faktur) REFERENCES faktur(id_faktur)
+);
+
+CREATE TABLE detil_pesanan (
+id_pesanan int(5) not null,
+id_produk varchar(5) not null,
+jumlah int(5) not null,
+harga decimal(10,0) not null,
+PRIMARY KEY(id_pesanan,id_produk),
+KEY FK_detil_pesanan (id_produk),
+KEY id_pesanan(id_pesanan),
+CONSTRAINT FK_detil_pesanan FOREIGN KEY(id_produk) REFERENCES produk(id_produk),
+CONSTRAINT FK_detil_pesanan2 FOREIGN KEY(id_pesanan) REFERENCES pesanan(id_pesanan)
+);
+
+ALTER TABLE pesanan MODIFY id_pesanan int(5) not null auto_increment;
+ALTER TABLE kwitansi MODIFY id_kwitansi int(5) not null auto_increment;
+
+INSERT INTO pelanggan VALUES ('P0001', 'Ahmad Solihin', 'Jakarta Selatan', '0217327762', 'ahmad.solihin@gmail.com');
+INSERT INTO pelanggan (id_pelanggan,nm_pelanggan,alamat,telepon,email) VALUES ('P0002','Johan Setiawan','Sukabumi','0218810809','johan.setiawan@gmail.com');
+
+DESCRIBE detil_pesanan;
+DROP TABLE detil_pesanan;
+SHOW TABLES;
+DROP TABLE faktur;
+SHOW TABLES;
+SELECT * FROM pelanggan;
